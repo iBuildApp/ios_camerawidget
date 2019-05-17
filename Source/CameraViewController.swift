@@ -11,7 +11,6 @@ import IBACoreUI
 import AVFoundation
 import NextLevel
 import Stevia
-import PKHUD
 
 class CameraViewController: BaseViewController, UINavigationControllerDelegate {
     // MARK: - Private properties
@@ -104,9 +103,8 @@ class CameraViewController: BaseViewController, UINavigationControllerDelegate {
     }
     
     func showImage(_ image: UIImage) {
-        HUD.show(.progress)
-        self.present(PreviewViewController(image: image, from: self, shareButton: data?.button), animated: true) {
-            HUD.hide()
+        if let router = self.options?.module?.moduleRouter as? CameraModuleRouter {
+            router.show(.preview(image: image, from: self, shareButton: data?.button))
         }
     }
 }

@@ -28,10 +28,12 @@ public class CameraModuleRouter: BaseRouter<CameraModuleRoute> {
         switch route {
         case .root:
             var options = TransitionOptions(animated: true)
+            options.module = module
             options.type = .modal
             return RouteTransition(module: generateRootViewController(), options: options)
         case .preview(let image, let from, let shareButton):
             var options = TransitionOptions(animated: true)
+            options.module = module
             options.type = .modal
             return RouteTransition(module: PreviewViewController(image: image, from: from, shareButton: shareButton), options: options)
         }
