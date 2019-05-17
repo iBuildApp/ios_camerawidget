@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import AppBuilderCoreUI
+import IBACoreUI
 import Stevia
 
 class CameraView: UIView {

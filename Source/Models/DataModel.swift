@@ -7,13 +7,13 @@
 
 import Foundation
 
-internal enum ButtonType: String, Codable {
+public enum ShareType: String, Codable {
     case email
     case share
 }
 
-internal struct ButtonModel: Codable {
-    public var type: ButtonType
+public struct ShareButtonModel: Codable {
+    public var type: ShareType
     public var email: String?
     public var label: String?
     
@@ -26,7 +26,7 @@ internal struct ButtonModel: Codable {
 
 internal struct DataModel: Codable {
     public var title: String?
-    public var button: ButtonModel?
+    public var button: ShareButtonModel?
     
     enum CodingKeys: String, CodingKey {
         case title = "#title"
@@ -39,11 +39,11 @@ internal struct DataModel: Codable {
     
     public mutating func mapping(map: [String: Any]) {
         title = map[CodingKeys.title.rawValue] as? String
-        if let buttonData = map[CodingKeys.button.rawValue] as? [String: Any], let rawType = buttonData[ButtonModel.CodingKeys.type.rawValue] as? String {
-            let email = buttonData[ButtonModel.CodingKeys.email.rawValue] as? String
-            let label = buttonData[ButtonModel.CodingKeys.label.rawValue] as? String
-            let type = ButtonType(rawValue: rawType)
-            self.button = ButtonModel(type: type ?? ButtonType.share, email: email, label: label)
+        if let buttonData = map[CodingKeys.button.rawValue] as? [String: Any], let rawType = buttonData[ShareButtonModel.CodingKeys.type.rawValue] as? String {
+            let email = buttonData[ShareButtonModel.CodingKeys.email.rawValue] as? String
+            let label = buttonData[ShareButtonModel.CodingKeys.label.rawValue] as? String
+            let type = ShareType(rawValue: rawType)
+            self.button = ShareButtonModel(type: type ?? ShareType.share, email: email, label: label)
         }
     }
 }

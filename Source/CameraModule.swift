@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import AppBuilderCore
-import AppBuilderCoreUI
+import IBACore
+import IBACoreUI
 
 public class CameraModule: BaseModule, ModuleType {
     public var moduleRouter: AnyRouter { return router }

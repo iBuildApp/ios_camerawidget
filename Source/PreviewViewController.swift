@@ -6,16 +6,16 @@
 //
 
 import Foundation
-import AppBuilderCore
-import AppBuilderCoreUI
+import IBACore
+import IBACoreUI
 import Stevia
 import MessageUI
 
-class PreviewViewController: UIViewController {
+class PreviewViewController: BaseViewController {
     
     private var previewImage: UIImage?
     private var rootController: UIViewController?
-    private var shareButton: ButtonModel?
+    private var shareButton: ShareButtonModel?
     
     var v: PreviewView!
     
@@ -24,7 +24,7 @@ class PreviewViewController: UIViewController {
         view = v
     }
     
-    public convenience init(image: UIImage, from rootController: UIViewController? = nil, shareButton: ButtonModel? = nil ) {
+    public convenience init(image: UIImage, from rootController: UIViewController? = nil, shareButton: ShareButtonModel? = nil ) {
         self.init()
         self.previewImage = image
         self.rootController = rootController

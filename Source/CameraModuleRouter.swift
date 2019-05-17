@@ -6,11 +6,12 @@
 //
 
 import Foundation
-import AppBuilderCore
-import AppBuilderCoreUI
+import IBACore
+import IBACoreUI
 
 public enum CameraModuleRoute: Route {
     case root
+    case preview(image: UIImage, from: UIViewController?, shareButton: ShareButtonModel?)
 }
 
 public class CameraModuleRouter: BaseRouter<CameraModuleRoute> {
@@ -24,9 +25,16 @@ public class CameraModuleRouter: BaseRouter<CameraModuleRoute> {
     }
     
     public override func prepareTransition(for route: CameraModuleRoute) -> RouteTransition {
-        var options = TransitionOptions(animated: true)
-        options.type = .modal
-        return RouteTransition(module: generateRootViewController(), options: options)
+        switch route {
+        case .root:
+            var options = TransitionOptions(animated: true)
+            options.type = .modal
+            return RouteTransition(module: generateRootViewController(), options: options)
+        case .preview(let image, let from, let shareButton):
+            var options = TransitionOptions(animated: true)
+            options.type = .modal
+            return RouteTransition(module: PreviewViewController(image: image, from: from, shareButton: shareButton), options: options)
+        }
     }
     
     public override func rootTransition() -> RouteTransition {
