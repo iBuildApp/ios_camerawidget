@@ -7,7 +7,8 @@
 
 import UIKit
 import IBACoreUI
-import Stevia
+import PinLayout
+import FlexLayout
 
 class CameraView: UIView {
     
@@ -20,19 +21,15 @@ class CameraView: UIView {
     convenience init() {
         self.init(frame: CGRect.zero)
         
-        sv(
-            previewView,
-            closeButton,
-            flipButton,
-            cameraButton
-        )
-        
         // MARK: Layout 📐
-        previewView.top(0).bottom(0).left(0).right(0)
-        closeButton.bottom(40).height(50).left(30)
-        closeButton.Width == closeButton.Height
-        cameraButton.bottom(40).centerHorizontally().height(50).width(100)
-        flipButton.bottom(40).height(50).width(80).right(30)
+        flex.define { flex in
+            flex.addItem(previewView).position(.absolute).height(100%).width(100%)
+            flex.addItem().position(.absolute).bottom(0).right(0).left(0).height(50).direction(.row).justifyContent(.spaceBetween).margin(20).define({ flex in
+                flex.addItem(closeButton).left(0).top(0).bottom(0).aspectRatio(1)
+                flex.addItem(cameraButton).position(.absolute).left(50%).marginLeft(-50).top(0).bottom(0).height(50).width(100)
+                flex.addItem(flipButton).right(0).top(0).bottom(0).width(80)
+            })
+        }
         
         // MARK: Styling 🎨
         previewView.backgroundColor = UIColor.black
@@ -48,5 +45,10 @@ class CameraView: UIView {
         closeButton.setImage(getCoreUIImage(with: "loginScreenCloseButton"), for: .normal)
         cameraButton.setImage(getCoreUIImage(with: "mTP_cameraButton"), for: .normal)
         flipButton.setImage(getCoreUIImage(with: "mTP_switchButton"), for: .normal)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        flex.layout()
     }
 }

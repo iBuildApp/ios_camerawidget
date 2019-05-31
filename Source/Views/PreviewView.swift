@@ -8,7 +8,8 @@
 import UIKit
 import IBACore
 import IBACoreUI
-import Stevia
+import PinLayout
+import FlexLayout
 
 class PreviewView: UIView {
     let imageView = UIImageView()
@@ -20,24 +21,15 @@ class PreviewView: UIView {
     convenience init(shareButtonTitle: String? = nil) {
         self.init(frame: CGRect.zero)
         
-        sv(
-            imageView,
-            closeButton,
-            retakeButton,
-            shareButton
-        )
-        
         // MARK: Layout 📐
-        imageView.top(30).bottom(80).left(0).right(0)
-        closeButton.bottom(40).height(50).left(20)
-        closeButton.Width == closeButton.Height
-        retakeButton.height(40)
-        shareButton.height(40)
-        
-        align(horizontally: retakeButton-20-shareButton-|)
-        
-        closeButton.CenterY == closeButton.CenterY
-        closeButton.CenterY == shareButton.CenterY
+        flex.define { flex in
+            flex.addItem(imageView).position(.absolute).top(30).bottom(80).left(0).right(0)
+            flex.addItem(closeButton).position(.absolute).left(20).bottom(20).height(50).aspectRatio(1)
+            flex.addItem().position(.absolute).alignItems(.center).bottom(0).right(0).height(50).direction(.rowReverse).margin(20).define({ flex in
+                flex.addItem(shareButton).height(40).marginLeft(8)
+                flex.addItem(retakeButton).height(40)
+            })
+        }
         
         // MARK: Styling 🎨
         backgroundColor = UIColor.black
@@ -62,5 +54,10 @@ class PreviewView: UIView {
         } else {
             shareButton.setTitle(Localization.Common.Text.share, for: .normal)
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        flex.layout()
     }
 }

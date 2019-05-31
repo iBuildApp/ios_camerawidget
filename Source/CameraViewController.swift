@@ -10,7 +10,6 @@ import IBACore
 import IBACoreUI
 import AVFoundation
 import NextLevel
-import Stevia
 
 class CameraViewController: BaseViewController, UINavigationControllerDelegate {
     // MARK: - Private properties
@@ -20,7 +19,13 @@ class CameraViewController: BaseViewController, UINavigationControllerDelegate {
     /// Widger config data
     private var data: DataModel?
     
-    private let cameraView = CameraView()
+    fileprivate var cameraView: CameraView {
+        return self.view as! CameraView
+    }
+    
+    override func loadView() {
+        view = CameraView()
+    }
     
     // MARK: - Controller life cycle methods
     public convenience init(type: String?, data: DataModel?) {
@@ -34,14 +39,17 @@ class CameraViewController: BaseViewController, UINavigationControllerDelegate {
         
         self.navigationController?.delegate = self
         
-        view.sv(cameraView)
-        cameraView.top(0).bottom(0).left(0).right(0)
-        
         NextLevel.shared.previewLayer.frame = UIScreen.main.bounds//cameraView.previewView.bounds
         cameraView.previewView.layer.addSublayer(NextLevel.shared.previewLayer)
         
         NextLevel.shared.photoDelegate = self
         NextLevel.shared.captureMode = .photo
+        
+        if #available(iOS 11.0, *) {
+            NextLevel.shared.photoConfiguration.codec = .jpeg
+        } else {
+            NextLevel.shared.photoConfiguration.codec = AVVideoCodecType(rawValue: AVVideoCodecJPEG)
+        }
         
         cameraView.closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
         cameraView.cameraButton.addTarget(self, action: #selector(takePhoto), for: .touchUpInside)
@@ -55,7 +63,9 @@ class CameraViewController: BaseViewController, UINavigationControllerDelegate {
     
     @objc
     func takePhoto() {
-        NextLevel.shared.capturePhoto()
+        if NextLevel.shared.canCapturePhoto {
+            NextLevel.shared.capturePhoto()
+        }
     }
     
     @objc

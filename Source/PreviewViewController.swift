@@ -8,7 +8,6 @@
 import Foundation
 import IBACore
 import IBACoreUI
-import Stevia
 import MessageUI
 
 class PreviewViewController: BaseViewController {
