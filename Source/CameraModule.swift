@@ -17,10 +17,7 @@ public class CameraModule: BaseModule, ModuleType {
     internal var data: DataModel?
 
     public override class func canHandle(config: WidgetModel) -> Bool {
-        if config.type == "takepicture" {
-            return true
-        }
-        return false
+        return config.type == "takepicture"
     }
 
     public required init() {
